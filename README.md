@@ -8,7 +8,6 @@
 A professional, fast, and entirely client-side web application that converts images to PDF. Built with a focus on a clean, modern UI and smooth user experience.
 
 ![Landing Page](https://ik.imagekit.io/snowieedev/landing-page.png)
-![Working App](https://ik.imagekit.io/snowieedev/working.png)
 
 ## 🌟 Features
 
@@ -22,7 +21,7 @@ A professional, fast, and entirely client-side web application that converts ima
 
 ## 🚀 Demo
 
-[Live Demo Link Placeholder]
+![Working App](https://ik.imagekit.io/snowieedev/working.png)
 
 ## 🛠 Tech Stack
 
