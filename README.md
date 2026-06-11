@@ -7,7 +7,8 @@
 
 A professional, fast, and entirely client-side web application that converts images to PDF. Built with a focus on a clean, modern UI and smooth user experience.
 
-![Screenshot Placeholder](https://via.placeholder.com/1200x600.png?text=Image+to+PDF+Hero+Screenshot)
+![Landing Page](https://ik.imagekit.io/snowieedev/landing-page.png)
+![Working App](https://ik.imagekit.io/snowieedev/working.png)
 
 ## 🌟 Features
 
@@ -84,5 +85,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 👏 Credits
 
-- Designed and built by [Your Name/Accurex].
+- Designed and built by [snowieedev].
 - Built with [Tailwind CSS](https://tailwindcss.com/), [jsPDF](https://github.com/parallax/jsPDF), and [SortableJS](https://github.com/SortableJS/Sortable).
