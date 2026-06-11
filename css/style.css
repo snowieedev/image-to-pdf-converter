@@ -1,0 +1,89 @@
+/* 
+ * Image to PDF - Global Styles 
+ * Custom tailwind overrides and specific component styles
+ */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F7F8FF; /* pastel-bg */
+    color: #1F2937; /* pastel-text */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6, .font-jakarta {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Style for the drag-and-drop placeholder */
+.sortable-ghost {
+    opacity: 0.4;
+    background: #EFF6FF; /* pastel-primary-light */
+    border-radius: 1.5rem; /* 2xl */
+}
+
+.sortable-drag {
+    opacity: 1 !important;
+}
+
+/* Custom animation delay for staggered list */
+.animate-fadeIn {
+    animation: fadeIn 0.5s ease-out forwards;
+    opacity: 0;
+}
+
+/* Custom Select Arrow */
+.custom-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1.25em 1.25em;
+    padding-right: 2.5rem; /* Make space for the icon */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Toast Notifications */
+.toast-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.toast {
+    min-width: 250px;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(100%);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.toast-success {
+    background-color: #10B981;
+}
+
+.toast-error {
+    background-color: #EF4444;
+}
+
+.toast-info {
+    background-color: #3B82F6;
+}

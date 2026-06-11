@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Images to PDF Converter. Drag, drop, and reorder images to create a professional PDF in seconds.">
+    <title>Images to PDF Converter - Accurex</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter and Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- JS Libraries: jsPDF and SortableJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'jakarta': ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        'pastel-bg': '#F7F8FF',
+                        'pastel-card': 'rgba(255, 255, 255, 0.7)',
+                        'pastel-border': 'rgba(230, 230, 255, 0.8)',
+                        'pastel-primary': '#3B82F6',
+                        'pastel-primary-light': '#EFF6FF',
+                        'pastel-text': '#1F2937',
+                        'pastel-text-light': '#6B7280',
+                    },
+                    boxShadow: {
+                        'hover': '0 10px 25px -5px rgba(59, 130, 246, 0.2), 0 8px 10px -6px rgba(59, 130, 246, 0.2)',
+                        'card': '0 4px 12px rgba(0, 0, 0, 0.02)',
+                    },
+                    borderRadius: {
+                        'xl': '1rem',
+                        '2xl': '1.5rem',
+                        '3xl': '2rem',
+                    },
+                    backdropBlur: {
+                        'lg': '16px',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        spin: {
+                            'from': { transform: 'rotate(0deg)' },
+                            'to': { transform: 'rotate(360deg)' },
+                        },
+                        fadeIn: {
+                            'from': { opacity: '0', transform: 'translateY(10px)' },
+                            'to': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    },
+                    animation: {
+                        float: 'float 4s ease-in-out infinite',
+                        spin: 'spin 1s linear infinite',
+                        fadeIn: 'fadeIn 0.5s ease-out forwards',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-pastel-bg text-pastel-text min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="w-full px-4 sm:px-8 py-5">
+        <nav class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-pastel-primary" aria-hidden="true">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor" fill-opacity="0.6"/>
+                    <path d="M2 17L12 22L22 17L12 12L2 17Z" fill="currentColor"/>
+                </svg>
+                <span class="font-jakarta font-bold text-2xl text-pastel-text">Accurex</span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-8 py-12 sm:py-20">
+            
+            <!-- Hero Section -->
+            <section id="heroSection" class="text-center relative overflow-hidden">
+                <div class="absolute top-0 left-10 w-16 h-16 bg-blue-100 rounded-full opacity-50 animation-delay-[100ms] animate-float pointer-events-none"></div>
+                <div class="absolute bottom-10 right-10 w-24 h-24 bg-blue-100 rounded-full opacity-50 animate-float pointer-events-none"></div>
+
+                <h1 class="font-jakarta font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-pastel-text">
+                    Images to PDF
+                </h1>
+                <h2 class="font-jakarta font-bold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-pastel-primary mt-2">
+                    Convert Instantly
+                </h2>
+                <p class="max-w-2xl mx-auto mt-6 text-lg sm:text-xl text-pastel-text-light">
+                    Drag, drop, and reorder your images. Preview them live and export a high-quality, professional PDF in seconds.
+                </p>
+            </section>
+
+            <!-- Upload Section -->
+            <section id="uploadSection" class="mt-12 sm:mt-16 max-w-4xl mx-auto" aria-label="Upload images">
+                <input type="file" id="fileInput" multiple accept="image/png, image/jpeg, image/webp" class="hidden" aria-label="File upload input">
+                
+                <div id="uploadArea" tabindex="0" role="button" aria-pressed="false" aria-label="Drag and drop or click to upload" class="relative w-full p-8 sm:p-12 text-center bg-pastel-card backdrop-blur-lg border-2 border-dashed border-pastel-border rounded-3xl cursor-pointer transition-all duration-300 hover:border-pastel-primary hover:bg-white/90 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-pastel-primary-light text-pastel-primary rounded-2xl flex items-center justify-center mx-auto transition-all duration-300 transform group-hover:scale-110">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 sm:w-10 sm:h-10 pointer-events-none">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                    </div>
+                    
+                    <p class="mt-6 text-xl font-semibold text-pastel-text pointer-events-none">
+                        Drag & drop your images here
+                    </p>
+                    <p class="mt-2 text-pastel-text-light pointer-events-none">
+                        or <span class="font-medium text-pastel-primary">click to browse files</span>
+                    </p>
+                    <p class="mt-4 text-xs text-pastel-text-light pointer-events-none">
+                        Supports PNG, JPG, and WEBP
+                    </p>
+                </div>
+            </section>
+
+            <!-- Controls & Preview Section (Hidden by default) -->
+            <section id="controlsSection" class="mt-16 hidden animate-fadeIn" aria-label="Settings and Preview">
+                <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
+                    
+                    <!-- Settings Panel -->
+                    <div class="w-full lg:w-1/3 lg:sticky lg:top-8 self-start">
+                        <div class="bg-pastel-card backdrop-blur-lg border border-pastel-border rounded-2xl shadow-card p-6 space-y-6">
+                            <h3 class="font-jakarta font-bold text-2xl text-pastel-text">Export Settings</h3>
+                            
+                            <!-- Quality -->
+                            <div>
+                                <label for="qualitySelect" class="block text-sm font-medium text-pastel-text-light mb-2">Quality</label>
+                                <select id="qualitySelect" class="w-full bg-white border border-pastel-border text-pastel-text rounded-xl p-3 focus:ring-2 focus:ring-pastel-primary focus:border-pastel-primary transition-all custom-select">
+                                    <option value="Standard">Standard (Good, small size)</option>
+                                    <option value="High" selected>High (Excellent, balanced)</option>
+                                    <option value="Ultra">Ultra (Lossless, large size)</option>
+                                </select>
+                            </div>
+
+                            <!-- Page Size -->
+                            <div>
+                                <label for="pageSizeSelect" class="block text-sm font-medium text-pastel-text-light mb-2">Page Size</label>
+                                <select id="pageSizeSelect" class="w-full bg-white border border-pastel-border text-pastel-text rounded-xl p-3 focus:ring-2 focus:ring-pastel-primary focus:border-pastel-primary transition-all custom-select">
+                                    <option value="a4" selected>A4 (210 x 297 mm)</option>
+                                    <option value="letter">Letter (8.5 x 11 in)</option>
+                                </select>
+                            </div>
+
+                            <!-- Margins -->
+                            <div>
+                                <label for="marginSelect" class="block text-sm font-medium text-pastel-text-light mb-2">Page Margins</label>
+                                <select id="marginSelect" class="w-full bg-white border border-pastel-border text-pastel-text rounded-xl p-3 focus:ring-2 focus:ring-pastel-primary focus:border-pastel-primary transition-all custom-select">
+                                    <option value="0">None (Full page)</option>
+                                    <option value="10" selected>Small (10mm)</option>
+                                    <option value="20">Normal (20mm)</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Fit -->
+                            <div>
+                                <label for="fitSelect" class="block text-sm font-medium text-pastel-text-light mb-2">Image Fit</label>
+                                <select id="fitSelect" class="w-full bg-white border border-pastel-border text-pastel-text rounded-xl p-3 focus:ring-2 focus:ring-pastel-primary focus:border-pastel-primary transition-all custom-select">
+                                    <option value="auto" selected>Auto-fit (Recommended)</option>
+                                    <option value="original">Original Size (No scaling)</option>
+                                </select>
+                            </div>
+
+                            <!-- Convert Button -->
+                            <button id="convertButton" class="w-full bg-pastel-primary text-white font-bold text-lg py-4 px-6 rounded-xl transition-all duration-300 hover:shadow-hover hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-blue-300 flex items-center justify-center space-x-2">
+                                <svg id="loaderIcon" class="w-5 h-5 animate-spin hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span id="convertButtonText">Convert to PDF</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Image Preview Grid -->
+                    <div class="w-full lg:w-2/3">
+                        <div class="flex justify-between items-center mb-4">
+                             <h3 class="font-jakarta font-bold text-2xl text-pastel-text">Your Images</h3>
+                             <p id="imageCount" class="text-sm text-pastel-text-light"></p>
+                        </div>
+                        <p id="gridHelperText" class="text-pastel-text-light mb-4">
+                            Drag and drop images to reorder the pages.
+                        </p>
+                        <div id="imageGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4" aria-live="polite">
+                            <!-- Image cards will be inserted here by JavaScript -->
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full px-4 sm:px-8 py-8 mt-20 border-t border-pastel-border/50">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-sm text-pastel-text-light">
+                &copy; 2025 Accurex — All Rights Reserved
+            </p>
+        </div>
+    </footer>
+    
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black/30 backdrop-blur-sm flex flex-col items-center justify-center z-50 hidden transition-opacity duration-300" aria-live="assertive">
+        <svg class="w-16 h-16 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <p id="loadingText" class="mt-4 text-lg font-medium text-white">Converting to PDF...</p>
+    </div>
+
+    <!-- Main Application Module -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
