@@ -55,7 +55,7 @@ Because this project is entirely static, no build step or package manager is req
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/Image-to-PDF.git
+   git clone https://github.com/snowieedev/Image-to-PDF.git
    cd Image-to-PDF
    ```
 
